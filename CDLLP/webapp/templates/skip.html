@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>跳转中...</title>
+    <!--<script type="text/javascript" src="jqury"></script>-->
+    <script type="text/javascript" charset="UTF-8" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+</head>
+<body onload="skipfun()">
+
+<script type="text/javascript">
+function skipfun(){
+	var path = "{{skippath}}";
+	if(path==""){
+		alert('操作成功');
+		WeixinJSBridge.invoke('closeWindow',{},function(res){
+			//alert(res.err_msg);
+		});
+	}
+	else
+		window.location.href=path;
+}
+
+
+</script>
+</body>
+
+
+</html>

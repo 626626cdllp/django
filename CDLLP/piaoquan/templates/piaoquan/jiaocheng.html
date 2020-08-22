@@ -1,0 +1,98 @@
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <title>交易教程</title>
+    <meta name="viewport" content="initial-scale=1.0,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="../../static/piaoquan/jquery.mobile-1.4.5.min.css"/>
+    <script src="../../static/piaoquan/jquery-1.10.2.js"></script>
+    <script src="../../static/piaoquan/jquery.mobile-1.4.5.min.js"></script>
+    <script src="../../static/piaoquan/sendpost.js"></script>
+</head>
+<body onload="getmydiaryinf()">
+
+<div data-role="page">
+
+    <div role="main" class="ui-content"  style="background-color: transparent" id='main' userid="{{ userid }}">
+     <a id="tixian_button" data-role="button" data-theme="a" style="padding-top:10px;margin-top: 1%;text-align: center;font-size: 20px;background-color:white;color:red;border-color:dodgerblue;border-style: solid">券码上传说明</a>
+
+    <br>
+    <div style="width:100%;display: block;" >
+            <div style="float:left;width:60%;" >
+                <img src="../../static/piaoquan/images/1.jpg" style="width:90%">
+            </div>
+            <div style="float:right;text-align:center;vert-align: middle; width:40%;height:100%" >
+                <p> 第一步 </p>
+                <p> 随便输入文本 </p>
+                <p> 进入账户中心 </p>
+            </div>
+        </div>
+
+        <div style="width:100%;display: block;margin-top:10px" >
+            <div style="float:left;width:60%;" >
+                <img src="../../static/piaoquan/images/2.jpg" style="width:90%">
+            </div>
+            <div style="float:right;text-align:center;vert-align: middle; width:40%;height:100%" >
+                <p> 第二步 </p>
+                <p> 点击照片 </p>
+                <p> 选中要上传的券码 </p>
+            </div>
+        </div>
+
+        <div style=" width:100%;display: block;margin-top:10px" >
+            <div style="float:left;width:60%;" >
+                <img src="../../static/piaoquan/images/3.jpg" style="width:90%">
+            </div>
+            <div style="float:right;text-align:center;vert-align: middle; width:40%;" >
+                <p> 第三步 </p>
+                <p> 支持多图上传 </p>
+                <p> 方便快捷 </p>
+            </div>
+        </div>
+
+        <div style="width:100%;display: block;margin-top:10px" >
+            <div style="float:left;width:60%;" >
+                <img src="../../static/piaoquan/images/4.jpg" style="width:90%">
+            </div>
+            <div style="float:right;text-align:center;vert-align: middle; width:40%;height:100%" >
+                <p> 第四步 </p>
+                <p> 重复券码自动识别 </p>
+                <p> 券码管理跟踪状态 </p>
+            </div>
+        </div>
+
+
+
+    </div><!-- /content -->
+
+ <div data-role="footer" data-position="fixed">
+        <div data-role="navbar">
+            <ul>
+                <li><a href="#" data-icon="home" class="ui-btn-active ui-state-persist">交易教程</a></li>
+                <li><a onclick="goto_mydiary()" data-icon="calendar">券码管理</a></li>
+                <li><a onclick="goto_setting()" data-icon="user"  >账户中心</a></li>
+            </ul>
+        </div>
+    </div>
+
+</div><!-- /page -->
+<script type='text/javascript'>
+
+    function goto_mydiary(){
+        userid = $('#main').attr('userid');
+        if(userid!='null')
+             window.location= 'mydiary?qunid=999&typeindex=1&userid='+userid
+    }
+    function goto_setting(){
+        userid = $('#main').attr('userid');
+        if(userid!='null')
+            window.location= 'setting?userid='+userid
+    }
+
+
+    </script>
+</body>
+</html>
+
+

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+<head>
+ <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <title>{{title}}</title>
+   <style type="text/css">
+      img,video{
+		  width:100%;
+
+	  }
+   </style>
+    <!--<script type="text/javascript" src="jqury"></script>-->
+</head>
+<body>
+
+<div style="margin-left:3%;width:93%">
+
+{{contentstr}}
+
+
+
+</div>
+
+<script type="text/javascript">
+function biangao(){
+	var width1 = window.innerWidth;
+    var height =document.getElementByTagName("video").offsetHeight;
+
+    alert(height);
+    var width =document.getElementByTagName("video").width();
+
+
+    alert(width);
+    var ratio = height/width;
+    alert(ratio);
+    document.getElementByTagName("video").width(width1);
+    document.getElementByTagName("video").height(width1*ratio);
+}
+
+
+</script>
+</body>
+</html>

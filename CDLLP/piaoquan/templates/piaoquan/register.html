@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% load static %}
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <title>绑定资金账号</title>
+    <meta name="viewport" content="initial-scale=1.0,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="../../static/piaoquan/jquery.mobile-1.4.5.min.css" />
+    <script src="../../static/piaoquan/jquery-1.10.2.js"></script>
+    <script src="../../static/piaoquan/jquery.mobile-1.4.5.min.js"></script>
+    <script src="../../static/piaoquan/sendpost.js"></script>
+
+
+</head>
+<body onload="init()">
+
+<div data-role="page">
+
+   <!--    <div data-role="header" data-position="fixed"  data-theme="a">
+        <h1>注册</h1>
+    </div>&lt;!&ndash; /header &ndash;&gt;-->
+
+    <div role="main" class="ui-content">
+
+        <div data-role="fieldcontain"  style="border: none;display:none">
+            <label for="register_openid">Openid：</label>
+            <input type="text" name="name" id="register_openid" disabled="true" value="{{ openid }}"  />
+        </div>
+
+        <div data-role="fieldcontain"  style="border: none;display:none">
+            <label for="register_userid">userid：</label>
+            <input type="text" name="name" id="register_userid" disabled="true" value="{{ userid }}"  />
+        </div>
+        <div data-role="fieldcontain"  style="border: none">
+            <label for="register_name">收款人姓名：</label>
+            <input type="text" name="name" id="register_name" value=""  />
+        </div>
+        <div data-role="fieldcontain"  style="border: none">
+            <label for="register_parameter1">开户银行：</label>
+
+            <select id="register_parameter1">
+                <option value="0">中国银行</option>
+                <option value="1">中国工商银行</option>
+                <option value="2">中国建设银行</option>
+                <option value="3">中国农业银行</option>
+                <option value="4">中国邮政储蓄银行</option>
+                <option value="5">交通银行</option>
+                <option value="6">中信银行</option>
+                <option value="7">平安银行</option>
+                <option value="8">上海浦东发展银行</option>
+                <option value="9">中国民生银行</option>
+                <option value="10">广发银行</option>
+                <option value="11">华夏银行</option>
+                <option value="12">北京银行</option>
+                <option value="13">上海银行</option>
+                <option value="14">招商银行</option>
+                <option value="15">中国光大银行</option>
+            </select>
+        </div>
+        <div data-role="fieldcontain"  style="border: none">
+            <label for="register_parameter2">银行卡账号：</label>
+            <input type="number" name="name" id="register_parameter2" value=""  />
+        </div>
+        <div data-role="fieldcontain"  style="border: none">
+            <label for="register_phone">登陆手机号：</label>
+            <input type="number" name="name" id="register_phone" value=""  />
+        </div>
+        <div data-role="fieldcontain"  style="margin-top: 1%;border: none">
+
+            <label  style="line-height: 100%">验证码：</label>
+
+            <div id = "vcode_div" data-role="none">
+                <div  class="ui-btn-inline" style="float: left;width: 65%">
+                    <input type="number" name="name" id="register_vcode"  value=""  />
+                </div>
+                <div  class="ui-btn-inline" style="float: right;width: 25%">
+                    <button onclick="register_vcode_fun()" style="height: 38px" id='register_vcode_button'>获取</button>
+                </div>
+            </div>
+            <br><br>
+        </div>
+
+
+
+        <br>
+    <div>
+        <a onclick="register_fun()" id="register_button" data-role="button" data-theme="b" style="margin-top: 1%">绑定</a>
+    </div>
+
+    </div><!-- /content -->
+
+
+</div><!-- /page -->
+<script type="text/javascript">//
+    function init()
+    {
+        userid = $('#register_userid').val();
+        if(userid!='None')
+        {
+            user=JSON.parse(localStorage["luanpeng_user"]);
+            $('#register_name').val(user.name);
+            var count = $("#register_parameter1 option").length;
+            for (var i = 0; i < count; i++) {
+                if ($("#register_parameter1 ").get(0).options[i].text == user.parameter1) {
+                    $("#register_parameter1 ").get(0).options[i].selected = 'selected';
+                    break;
+                }
+            }
+
+            $('#register_parameter1').selectmenu('refresh');
+            $('#register_parameter2').val(user.parameter2);
+            $('#register_phone').val(user.phone);
+        }
+    }
+    var register_vcode="1234";
+
+    //注册验证码
+    function register_vcode_fun()
+    {
+        var button_text = $('#register_vcode_button').text();
+        if(button_text!='获取')
+        {
+            return
+        }
+
+        //请求地址  json数据格式  返回值和格式已经定好了
+        var phone = $("#register_phone").val();
+        if(phone=="")
+        {
+            alert("请先输入手机号码");
+            return;
+        }
+
+        if(phone!="")
+        {
+            //设置周期函数
+            var miao=60;
+            var sh=self.setInterval(function(){
+                miao-=1
+                if(miao<1)
+                {
+                    $("#register_vcode_button").text("获取");
+                }else
+                {
+                    $('#register_vcode_button').text(miao.toString()+"秒")
+                }
+            },1000);
+
+            var url = HTTP_REQUEST+"jiekou/getvcode";
+            var json = {
+                "phone": phone,
+            };
+            sendDataByPost(url,json,function(backstr){
+                if(backstr.respcode == "0"){
+                    register_vcode = backstr.data;
+                    //alert("验证码已发送到您的手机上");
+                }else{
+                    alert("访问错误");
+                }
+            });
+        }
+    }
+
+    //注册函数
+    function register_fun()
+    {
+        //请求地址  json数据格式  返回值和格式已经定好了
+        var phone = $("#register_phone").val();
+        var parameter1 = $("#register_parameter1").find("option:selected").text();
+
+        var parameter2 = $("#register_parameter2").val();
+        var vcodestr = $("#register_vcode").val();
+        if(vcodestr!=register_vcode)
+        {
+            alert("验证码错误");
+            return;
+        }
+        phone=phone.replace(" ","");
+        phone=phone.replace(" ","");
+        if(phone=="")
+        {
+            alert("请先设置完整信息");
+            return;
+        }
+
+
+        identity = $('#register_openid').val();
+        userid = $('#register_userid').val();
+        name =  $('#register_name').val();
+        var url,json;
+        if(identity!='null'){    // 注册用户
+            $("#register_button").text("注册中...");
+            url= HTTP_REGISTER;
+            json = {
+            "phone": phone,
+            'name':name,
+            "parameter1": parameter1,
+            "parameter2": parameter2,
+            "password": '123456',
+            "usertype":"0",
+            "identity":identity,
+            };
+        }
+        else if(userid!='null')   //绑定用户
+        {
+            $("#register_button").text("绑定中...");
+            url= HTTP_UPDATE_USERINF;
+            json = {
+            'userid':userid,
+            'name':name,
+            "phone": phone,
+            "parameter1": parameter1,
+            "parameter2": parameter2,
+            };
+        }
+        else {
+            alert("查询不到用户信息，请在微信中打开");
+            return;
+        }
+
+        sendDataByPost(url,json,function(backstr){
+            if(backstr.respcode == "0"){
+                $("#register_button").text("绑定成功");
+                localStorage["luanpeng_user"] =JSON.stringify(backstr.data);
+                WeixinJSBridge.invoke('closeWindow',{},function(res){
+                    //alert(res.err_msg);
+                });
+
+                //window.location.href="setting.html";
+            }else{
+                alert(backstr.message);
+                $("#register_button").text("绑定");
+            }
+        });
+
+    }
+
+</script>
+</body>
+</html>
